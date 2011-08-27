@@ -16,10 +16,10 @@ public class Chi {
 		String strText = null;
 		byte[] binText = readTextFile(strFilePath);
 		// header check
-		String BFHeader = "";
+		String BFHeader = ""; //$NON-NLS-1$
 		if (binText.length >= 4)
 			BFHeader = new String(binText, 0, 4);
-		if (BFHeader.equals("BF01")) {// This File is BF01
+		if (BFHeader.equals("BF01")) {// This File is BF01 //$NON-NLS-1$
 
 			try {
 				binText = decrypt(binText, MD5.digest(key.getBytes()));
@@ -40,7 +40,7 @@ public class Chi {
 		// バイナリデータをstrTextにセット
 		String strText = new String(binText, charsetName);
 		// 無条件にCRLF,CRはLFに変更
-		strText = strText.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
+		strText = strText.replaceAll("\r\n", "\n").replaceAll("\r", "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		return strText;
 
 	}
@@ -103,13 +103,13 @@ public class Chi {
 
 		// "BF01" + int(size) + 8
 		if (length - 32 < 0)
-			throw new IOException("Invalid file");
+			throw new IOException("Invalid file"); //$NON-NLS-1$
 		if (length % 8 != 0)
-			throw new IOException("Invalid file size (not mutiples of 8)");
+			throw new IOException("Invalid file size (not mutiples of 8)"); //$NON-NLS-1$
 		// header チェック
 		String BFHeader = new String(data, 0, 4);
-		if (!BFHeader.equals("BF01"))
-			throw new IOException("This File is NOT BF01");
+		if (!BFHeader.equals("BF01")) //$NON-NLS-1$
+			throw new IOException("This File is NOT BF01"); //$NON-NLS-1$
 		// Size取得
 		int BFSize = 0;
 		int k = 1;
@@ -133,7 +133,7 @@ public class Chi {
 		// byte[] pass = MiniTomboViewer.passwordBox.getPassDigest();
 
 		if (passDigest == null)
-			throw new IOException("password input error");
+			throw new IOException("password input error"); //$NON-NLS-1$
 		// System.out.println("md5 ===============");
 		// printHex(pass,pass.length);
 
@@ -147,7 +147,9 @@ public class Chi {
 		// 32- :* data
 
 		// data部分をバイトオーダー変換
-		data = orderConvert(data, length - 8, 8);
+		// 2011/08/28 不必要な代入を除去
+		// data = orderConvert(data, length - 8, 8);
+		orderConvert(data, length - 8, 8);
 
 		Blowfish cipher = new Blowfish();
 		cipher.setKey(passDigest);
@@ -169,7 +171,7 @@ public class Chi {
 		if (!checkMD5(orgMd5, dataMd5)) {
 			// MiniTomboViewer.passwordBox.resetPassword();
 			// throw new IOException("MD5 check sum error");
-			throw new IOException("Password is not correct.");
+			throw new IOException("Password is not correct."); //$NON-NLS-1$
 		}
 		// printHex(dataMd5, dataMd5.length);
 		// printHex(orgMd5,16);
@@ -213,7 +215,7 @@ public class Chi {
 		// 32- :* data
 
 		// 0-3 : BF01(4 bytes)
-		System.arraycopy("BF01".getBytes(), 0, savedata, 0, 4);
+		System.arraycopy("BF01".getBytes(), 0, savedata, 0, 4); //$NON-NLS-1$
 
 		// 4-7 : data length (include randum area + md5sum)(4 bytes)
 		/***************
@@ -350,38 +352,31 @@ abstract class Cipher {
 	}
 }
 
-
-
-
-
-
 /*
  * This file is part of "The Java Telnet Application".
- *
- * (c) Matthias L. Jugel, Marcus Meiﾟner 1996-2002. All Rights Reserved.
- * The file was changed by Radek Polak to work as midlet in MIDP 1.0
- *
+ * 
+ * (c) Matthias L. Jugel, Marcus Meiﾟner 1996-2002. All Rights Reserved. The
+ * file was changed by Radek Polak to work as midlet in MIDP 1.0
+ * 
  * Please visit http://javatelnet.org/ for updates and contact.
- *
- * --LICENSE NOTICE--
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- * --LICENSE NOTICE--
- *
- *
- * This code is based on Bruce Schneiders code:
- * Bruce Schneier: Applied Cryptography 2nd ed., John Wiley & Sons, 1996
+ * 
+ * --LICENSE NOTICE-- This program is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the License,
+ * or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 675 Mass
+ * Ave, Cambridge, MA 02139, USA. --LICENSE NOTICE--
+ * 
+ * 
+ * This code is based on Bruce Schneiders code: Bruce Schneier: Applied
+ * Cryptography 2nd ed., John Wiley & Sons, 1996
  */
 
 /**
@@ -404,6 +399,7 @@ final class Blowfish extends Cipher {
 
 	// Set key of this Blowfish from a String
 
+	@Override
 	public void setKey(String skey) {
 		byte[] key = skey.getBytes();
 		setKey(key);
@@ -411,6 +407,7 @@ final class Blowfish extends Cipher {
 
 	// Set key of this Blowfish from a bytearray
 
+	@Override
 	public void setKey(byte[] key) {
 
 		int i, j, len = key.length;
@@ -418,11 +415,11 @@ final class Blowfish extends Cipher {
 		int L, R;
 		int[] output = new int[2];
 
-		System.arraycopy(blowfish_pbox, 0, P, 0, 18);
-		System.arraycopy(blowfish_sbox, 0, S0, 0, 256);
-		System.arraycopy(blowfish_sbox, 256, S1, 0, 256);
-		System.arraycopy(blowfish_sbox, 512, S2, 0, 256);
-		System.arraycopy(blowfish_sbox, 768, S3, 0, 256);
+		System.arraycopy(blowfish_pbox, 0, this.P, 0, 18);
+		System.arraycopy(blowfish_sbox, 0, this.S0, 0, 256);
+		System.arraycopy(blowfish_sbox, 256, this.S1, 0, 256);
+		System.arraycopy(blowfish_sbox, 512, this.S2, 0, 256);
+		System.arraycopy(blowfish_sbox, 768, this.S3, 0, 256);
 
 		// Actual subkey generation
 		//
@@ -432,7 +429,7 @@ final class Blowfish extends Cipher {
 			temp = (((key[j] & 0xff) << 24)
 					| ((key[(j + 1) % len] & 0xff) << 16)
 					| ((key[(j + 2) % len] & 0xff) << 8) | ((key[(j + 3) % len] & 0xff)));
-			P[i] = P[i] ^ temp;
+			this.P[i] = this.P[i] ^ temp;
 			j = (j + 4) % len;
 		}
 		/**
@@ -449,49 +446,50 @@ final class Blowfish extends Cipher {
 			encrypt(L, R, output);
 			L = output[0];
 			R = output[1];
-			P[i] = L;
-			P[i + 1] = R;
+			this.P[i] = L;
+			this.P[i + 1] = R;
 		}
 
 		for (j = 0; j < 256; j += 2) {
 			encrypt(L, R, output);
 			L = output[0];
 			R = output[1];
-			S0[j] = L;
-			S0[j + 1] = R;
+			this.S0[j] = L;
+			this.S0[j + 1] = R;
 		}
 		for (j = 0; j < 256; j += 2) {
 			encrypt(L, R, output);
 			L = output[0];
 			R = output[1];
-			S1[j] = L;
-			S1[j + 1] = R;
+			this.S1[j] = L;
+			this.S1[j + 1] = R;
 		}
 		for (j = 0; j < 256; j += 2) {
 			encrypt(L, R, output);
 			L = output[0];
 			R = output[1];
-			S2[j] = L;
-			S2[j + 1] = R;
+			this.S2[j] = L;
+			this.S2[j + 1] = R;
 		}
 		for (j = 0; j < 256; j += 2) {
 			encrypt(L, R, output);
 			L = output[0];
 			R = output[1];
-			S3[j] = L;
-			S3[j + 1] = R;
+			this.S3[j] = L;
+			this.S3[j + 1] = R;
 		}
 
-		IV0 = 0;
-		IV1 = 0;
+		this.IV0 = 0;
+		this.IV1 = 0;
 
 	}
 
+	@Override
 	public synchronized void encrypt(byte[] src, int srcOff, byte[] dest,
 			int destOff, int len) {
 		int[] out = new int[2];
-		int iv0 = IV0;
-		int iv1 = IV1;
+		int iv0 = this.IV0;
+		int iv1 = this.IV1;
 		int end = srcOff + len;
 
 		for (int si = srcOff, di = destOff; si < end; si += 8, di += 8) {
@@ -511,8 +509,8 @@ final class Blowfish extends Cipher {
 			dest[di + 6] = (byte) ((iv1 >>> 16) & 0xff);
 			dest[di + 7] = (byte) ((iv1 >>> 24) & 0xff);
 		}
-		IV0 = iv0;
-		IV1 = iv1;
+		this.IV0 = iv0;
+		this.IV1 = iv1;
 	}
 
 	public void encrypt(int xL, int xR, int[] out) {
@@ -521,24 +519,24 @@ final class Blowfish extends Cipher {
 		L = xL;
 		R = xR;
 
-		L ^= P[0];
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[1]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[2]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[3]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[4]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[5]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[6]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[7]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[8]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[9]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[10]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[11]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[12]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[13]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[14]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[15]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[16]);
-		R ^= P[17];
+		L ^= this.P[0];
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[1]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[2]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[3]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[4]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[5]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[6]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[7]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[8]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[9]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[10]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[11]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[12]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[13]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[14]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[15]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[16]);
+		R ^= this.P[17];
 
 		/**
 		 * L ^= P[0]; R ^= ((((S0[(int) (L & 0xff)] + S1[(int) ((L >>> 8) &
@@ -580,11 +578,12 @@ final class Blowfish extends Cipher {
 		out[1] = L;
 	}
 
+	@Override
 	public synchronized void decrypt(byte[] src, int srcOff, byte[] dest,
 			int destOff, int len) {
 		int[] out = new int[2];
-		int iv0 = IV0;
-		int iv1 = IV1;
+		int iv0 = this.IV0;
+		int iv1 = this.IV1;
 		int d0;
 		int d1;
 		int end = srcOff + len;
@@ -608,8 +607,8 @@ final class Blowfish extends Cipher {
 			iv0 = d0;
 			iv1 = d1;
 		}
-		IV0 = iv0;
-		IV1 = iv1;
+		this.IV0 = iv0;
+		this.IV1 = iv1;
 	}
 
 	public int[] decrypt(int xL, int xR, int[] out) {
@@ -619,24 +618,24 @@ final class Blowfish extends Cipher {
 		R = xR;
 		// for big endian
 
-		L ^= P[17];
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[16]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[15]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[14]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[13]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[12]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[11]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[10]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[9]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[8]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[7]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[6]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[5]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[4]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[3]);
-		R ^= ((((S0[(int) ((L >>> 24) & 0xff)] + S1[(int) ((L >>> 16) & 0xff)]) ^ S2[(int) ((L >>> 8) & 0xff)]) + S3[(int) (L & 0xff)]) ^ P[2]);
-		L ^= ((((S0[(int) ((R >>> 24) & 0xff)] + S1[(int) ((R >>> 16) & 0xff)]) ^ S2[(int) ((R >>> 8) & 0xff)]) + S3[(int) (R & 0xff)]) ^ P[1]);
-		R ^= P[0];
+		L ^= this.P[17];
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[16]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[15]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[14]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[13]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[12]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[11]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[10]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[9]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[8]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[7]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[6]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[5]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[4]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[3]);
+		R ^= ((((this.S0[((L >>> 24) & 0xff)] + this.S1[((L >>> 16) & 0xff)]) ^ this.S2[((L >>> 8) & 0xff)]) + this.S3[(L & 0xff)]) ^ this.P[2]);
+		L ^= ((((this.S0[((R >>> 24) & 0xff)] + this.S1[((R >>> 16) & 0xff)]) ^ this.S2[((R >>> 8) & 0xff)]) + this.S3[(R & 0xff)]) ^ this.P[1]);
+		R ^= this.P[0];
 
 		/**
 		 * L ^= P[17]; R ^= ((((S0[(int) (L & 0xff)] + S1[(int) ((L >>> 8) &
