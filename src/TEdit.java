@@ -94,6 +94,7 @@ class TukusiConfig {
 		this.exts = exts;
 	}
 
+	@SuppressWarnings("nls")
 	public TukusiConfig(String rootpath, Font font, String sep,
 			boolean isSearchCaseSensitive, String encode) {
 		super();
@@ -105,38 +106,55 @@ class TukusiConfig {
 		// デフォルトの追加拡張子を生成
 		this.exts = new ArrayList<String>();
 		addTextExt("txt"); // TextFile //$NON-NLS-1$
-		addTextExt("xml"); // XML //$NON-NLS-1$
 		addTextExt("asm"); // Assembler //$NON-NLS-1$
+		addTextExt("s"); // Assembler //$NON-NLS-1$
+		addTextExt("as"); // ActionScript //$NON-NLS-1$
+		addTextExt(".bashrc"); // bash //$NON-NLS-1$
 		addTextExt("c"); // C //$NON-NLS-1$
 		addTextExt("cpp"); // C++ //$NON-NLS-1$
 		addTextExt("hpp"); // C++ //$NON-NLS-1$
 		addTextExt("h"); // C/C++ //$NON-NLS-1$
-		addTextExt("java"); // Java //$NON-NLS-1$
-		addTextExt("js"); // JavaScript //$NON-NLS-1$
-		addTextExt("hs"); // Haskell //$NON-NLS-1$
-		addTextExt("fs"); // FSharp //$NON-NLS-1$
-		addTextExt("pl"); // Perl //$NON-NLS-1$
-		addTextExt("scm"); // Scheme //$NON-NLS-1$
-		addTextExt("php"); // PHP //$NON-NLS-1$
-		addTextExt("py"); // Python //$NON-NLS-1$
-		addTextExt("rb"); // Ruby //$NON-NLS-1$
-		addTextExt("cgi"); // perl php etc //$NON-NLS-1$
-		addTextExt("d"); // D //$NON-NLS-1$
-		addTextExt("l"); // Lisp //$NON-NLS-1$
-		addTextExt("ml"); // OCaml //$NON-NLS-1$
-		addTextExt("el"); // Emacs Lisp //$NON-NLS-1$
-		addTextExt("e"); // Eiffel //$NON-NLS-1$
-		addTextExt("bat"); // Windows Batch File //$NON-NLS-1$
-		addTextExt("sh"); // Shellscript //$NON-NLS-1$
-		addTextExt("vb"); // Visual Basic //$NON-NLS-1$
+		addTextExt("csh"); // CSHELL //$NON-NLS-1$
+		addTextExt("css"); // CSS //$NON-NLS-1$
+		addTextExt("cgi"); // CGI //$NON-NLS-1$
 		addTextExt("cs"); // C# //$NON-NLS-1$
-		addTextExt("as"); // ActionScript //$NON-NLS-1$
+		addTextExt("d"); // D //$NON-NLS-1$
+		addTextExt("go"); // GO language
+		addTextExt("e"); // Eiffel //$NON-NLS-1$
+		addTextExt("el"); // Emacs Lisp //$NON-NLS-1$
+		addTextExt(".emacs"); // emacs //$NON-NLS-1$
+		addTextExt("erl"); // Erlang //$NON-NLS-1$
+		addTextExt("fs"); // FSharp //$NON-NLS-1$
+		addTextExt("hs"); // Haskell //$NON-NLS-1$
+		addTextExt("lhs"); // Haskell //$NON-NLS-1$
+		addTextExt("hp"); // hplang(自作ソフト) //$NON-NLS-1$
+		addTextExt("hps"); // hplang(自作ソフト) //$NON-NLS-1$
 		addTextExt("htm"); // HTML //$NON-NLS-1$
 		addTextExt("html"); // HTML //$NON-NLS-1$
-		addTextExt("css"); // CSS //$NON-NLS-1$
-		addTextExt(".vim"); // vim //$NON-NLS-1$
-		addTextExt(".emacs"); // emacs //$NON-NLS-1$
-		addTextExt(".bashrc"); // bash //$NON-NLS-1$
+		addTextExt("xhtml"); // HTML //$NON-NLS-1$
+		addTextExt("java"); // Java //$NON-NLS-1$
+		addTextExt("js"); // JavaScript //$NON-NLS-1$
+		addTextExt("json"); // JavaScript Object Notation//$NON-NLS-1$
+		addTextExt("l"); // Lisp //$NON-NLS-1$
+		addTextExt("ly"); // Lilypond(GNU) //$NON-NLS-1$
+		addTextExt("lua"); // Lua //$NON-NLS-1$
+		addTextExt("ml"); // OCaml //$NON-NLS-1$
+		addTextExt("pl"); // Perl //$NON-NLS-1$
+		addTextExt("cgi"); // perl php etc //$NON-NLS-1$
+		addTextExt("php"); // PHP //$NON-NLS-1$
+		addTextExt("py"); // Python //$NON-NLS-1$
+		addTextExt("sql"); // SQL TEXT FILE//$NON-NLS-1$
+		addTextExt("rb"); // Ruby //$NON-NLS-1$
+		addTextExt("scm"); // Scheme //$NON-NLS-1$
+		addTextExt("sh"); // Shellscript //$NON-NLS-1$
+		addTextExt("st"); // Smalltalk //$NON-NLS-1$
+		addTextExt("vb"); // Visual Basic //$NON-NLS-1$
+		addTextExt("vim"); // vimscript//$NON-NLS-1$
+		addTextExt("vimrc"); // vim //$NON-NLS-1$
+		addTextExt("bat"); // Windows Batch File //$NON-NLS-1$
+		addTextExt("xml"); // XML //$NON-NLS-1$
+		addTextExt("yaml"); // yaml
+		this.exts.add("makefile"); // makefile
 	}
 
 	public static final String filer = "pcmanfm"; //$NON-NLS-1$
@@ -322,7 +340,7 @@ class Tukusi extends JPanel {
 						Tukusi.this.lastFocus = FTREE;
 						if (!nodeIsDir((DefaultMutableTreeNode) Tukusi.this.tree
 								.getLastSelectedPathComponent())) {
-							Tukusi.this.area.requestFocus();
+							Tukusi.this.area.requestFocusInWindow();
 						}
 						e.consume();
 						break;
@@ -352,7 +370,7 @@ class Tukusi extends JPanel {
 				int keycode = e.getKeyCode();
 				if (keycode == KeyEvent.VK_ESCAPE) {
 					Tukusi.this.lastFocus = FAREA;
-					Tukusi.this.tree.requestFocus();
+					Tukusi.this.tree.requestFocusInWindow();
 					e.consume();
 				} else if (keycode == KeyEvent.VK_S
 						&& e.getModifiers() == ActionEvent.CTRL_MASK) {
@@ -365,11 +383,11 @@ class Tukusi extends JPanel {
 						} else {
 							msgbox("このファイル形式は保存できません"); //$NON-NLS-1$
 						}
-						Tukusi.this.area.requestFocus();
+						Tukusi.this.area.requestFocusInWindow();
 					} catch (IOException e1) {
 						msgbox("ファイルの保存に失敗しました"); //$NON-NLS-1$
 						// e1.printStackTrace();
-						Tukusi.this.area.requestFocus();
+						Tukusi.this.area.requestFocusInWindow();
 					}
 				} else if (keycode == KeyEvent.VK_N
 						&& e.getModifiers() == ActionEvent.CTRL_MASK) {
@@ -477,13 +495,13 @@ class Tukusi extends JPanel {
 				} else if (keycode == KeyEvent.VK_ESCAPE) {
 					switch (Tukusi.this.lastFocus) {
 					case FTREE:
-						Tukusi.this.tree.requestFocus();
+						Tukusi.this.tree.requestFocusInWindow();
 						break;
 					case FAREA:
-						Tukusi.this.area.requestFocus();
+						Tukusi.this.area.requestFocusInWindow();
 						break;
 					default:
-						Tukusi.this.tree.requestFocus();
+						Tukusi.this.tree.requestFocusInWindow();
 					}
 					e.consume();
 				} else if (keycode == KeyEvent.VK_F
@@ -615,7 +633,7 @@ class Tukusi extends JPanel {
 			if (this.root != null) {
 				this.tree.setSelectionPath(node2treepath(this.root));
 			}
-			this.tree.requestFocus();
+			this.tree.requestFocusInWindow();
 			return true;
 		}
 		return false;
@@ -709,6 +727,12 @@ class Tukusi extends JPanel {
 		InputMap ti = this.tree.getInputMap();
 		ti.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
 				"changeRoot"); //$NON-NLS-1$
+		// 2011/12/19 自分で書いたコードながらよくわからなくなった。selectChildなどのactionにない名前は
+		// は組み込みで提供されている何か？
+		// 子がディレクトリ1つならさらにその子を開くようにしたいのだが・・
+		// ->
+		// そうっぽい。自作しないといけんhttp://massapi.com/source/jgraphx/src/com/mxgraph/swing/handler/mxKeyboardHandler.java.html
+		// 自作だと、画面はみ出したときにリサイズとか色々考えることがあってめんどいのでやめとこうかなぁ
 		ti.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK),
 				"selectChild"); //$NON-NLS-1$
 		ti.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK),
@@ -775,6 +799,9 @@ class Tukusi extends JPanel {
 
 	private String getFileContent(String filename) {
 		try {
+			File f = new File(filename);
+			if (!f.exists())
+				return null;
 			FileInputStream fis = new FileInputStream(filename);
 			InputStreamReader in = new InputStreamReader(fis,
 					this.conf.getEncode());
@@ -791,6 +818,7 @@ class Tukusi extends JPanel {
 		} catch (Exception err) {
 			System.out.println("ファイル読み込み失敗"); //$NON-NLS-1$
 			System.out.print(err.toString());
+			this.tree.requestFocusInWindow();
 			return null;
 		}
 	}
@@ -1001,6 +1029,9 @@ class Tukusi extends JPanel {
 		if (!this.conf.isTextExt(filepath))
 			return false;
 		String text = getFileContent(filepath);
+		if (text == null)
+			return false;
+
 		// 現在のカーソルの左右の部分文字列
 		String leftstr, rightstr;
 		int po = pos;
@@ -1042,8 +1073,8 @@ class Tukusi extends JPanel {
 				this.area.setSelectionEnd(this.area.getSelectionStart()
 						+ keyword.length());
 			}
-			this.area.requestFocus(true);
-			this.search.requestFocus();
+			this.area.requestFocusInWindow();
+			this.search.requestFocusInWindow();
 			// Backward
 		} else {
 			if (po > 0) {
@@ -1072,8 +1103,8 @@ class Tukusi extends JPanel {
 				this.area.setSelectionEnd(this.area.getSelectionStart()
 						+ keyword.length());
 			}
-			this.area.requestFocus(true);
-			this.search.requestFocus();
+			this.area.requestFocusInWindow();
+			this.search.requestFocusInWindow();
 		}
 		return true;
 	}
@@ -1143,7 +1174,7 @@ class Tukusi extends JPanel {
 	void focusSearch() {
 		this.search.setSelectionStart(0);
 		this.search.setSelectionEnd(this.search.getText().length());
-		this.search.requestFocus();
+		this.search.requestFocusInWindow();
 	}
 
 	public void nextSibling() {
@@ -1265,7 +1296,7 @@ class Tukusi extends JPanel {
 
 	public void requestTreeFocus() {
 		this.tree.setSelectionPath(node2treepath(this.root));
-		this.tree.requestFocus();
+		this.tree.requestFocusInWindow();
 	}
 }
 
@@ -1275,7 +1306,9 @@ public class TEdit extends JFrame {
 
 	private ArrayList<Tukusi> main;
 	private JTabbedPane tabs;
-	private static final Font font = new Font("MigMix 1M", Font.PLAIN, 18); //$NON-NLS-1$
+	//private static final Font font = new Font("MigMix 1M", Font.PLAIN, 18); //$NON-NLS-1$
+	//private static final Font font = new Font("sazanami-gothic", Font.PLAIN, 18); //$NON-NLS-1$
+	private static final Font font = new Font("mona", Font.PLAIN, 18); //$NON-NLS-1$
 	private static final String sep = "\n"; //$NON-NLS-1$
 	private static final int winx = 1920;
 	private static final int winy = 1080;
